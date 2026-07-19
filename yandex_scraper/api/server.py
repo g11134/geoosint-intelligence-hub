@@ -66,7 +66,7 @@ def create_app() -> FastAPI:
 
     @app.get("/health")
     def health() -> dict:
-        snapshot = repository.source_snapshot()
+        snapshot = _public_source_snapshot()
         if not snapshot["exists"]:
             return {
                 "status": "missing",
@@ -97,7 +97,7 @@ def create_app() -> FastAPI:
     def meta() -> dict:
         records = _records_or_503()
         return {
-            "source": repository.source_snapshot(),
+            "source": _public_source_snapshot(),
             "count": len(records),
             "categories": category_counts(records),
             "coordinateOrder": {
@@ -148,7 +148,7 @@ def create_app() -> FastAPI:
         records = _card_records_or_503()
         commercial_records = filter_organization_cards(records)
         return {
-            "source": repository.source_snapshot(),
+            "source": _public_source_snapshot(),
             "count": len(commercial_records),
             "categories": card_category_counts(records),
             "contract": {
@@ -273,6 +273,35 @@ def create_app() -> FastAPI:
         return _review_ai_analysis_compat_response(org_id, refresh=refresh)
 
     return app
+
+
+def _public_source_snapshot() -> dict:
+    """Return safe dataset metadata without exposing server or workstation paths."""
+    snapshot = repository.source_snapshot()
+    metadata = snapshot.get("metadata")
+    public_metadata = {}
+    if isinstance(metadata, dict):
+        allowed_keys = {
+            "built_at",
+            "category_rows",
+            "enriched_card_rows",
+            "feature_rows",
+            "schema_version",
+            "source_kind",
+            "source_rows",
+            "unique_rows",
+            "valid_coordinate_rows",
+        }
+        public_metadata = {
+            key: value for key, value in metadata.items() if key in allowed_keys
+        }
+
+    return {
+        "exists": bool(snapshot.get("exists")),
+        "sizeBytes": snapshot.get("sizeBytes", 0),
+        "modifiedAt": snapshot.get("modifiedAt"),
+        "metadata": public_metadata,
+    }
 
 
 def _filtered_records(
