@@ -1,0 +1,3 @@
+title;shortTitle;fullAddress;categories_0_name;phones_0_number;coordinates_0;coordinates_1;permalink;ratingData_ratingCount;ratingData_ratingValue;source_query;source_bbox
+Alpha Clinic;Alpha;Nevsky Prospect 1;Dental clinic;+7 812 000-00-01;30.3158;59.9391;10001;7;4.8;dentistry;30.31,59.93~30.32,59.94
+Beta Clinic;Beta;Admiralteyskaya Embankment 1;Dental clinic;+7 812 000-00-02;not-a-lon;91;10002;0;;dentistry;30.30,59.90~30.40,60.00

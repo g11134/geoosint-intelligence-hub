@@ -1,0 +1,9 @@
+aiosqlite
+fastapi
+openpyxl
+osmnx
+pandas
+patchright
+pyproj
+shapely
+uvicorn
