@@ -17,6 +17,8 @@ python -m patchright install chromium
 
 ## Flutter-интерфейс
 
+https://geoosint.hubbadubbahub.ru/
+
 Каталог `frontend/` содержит Flutter Web-интерфейс для карты организаций и
 аналитики отзывов. Production API URL передаётся только как публичный адрес
 при сборке:
